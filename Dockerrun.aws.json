@@ -1,0 +1,45 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "ryanzzff/docker-multi-containers-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "ryanzzff/docker-multi-containers-server",
+      "hostname": "api",
+      "essential": false,
+      "environment" : [
+        { "name" : "REDIS_HOST", "value" : "docker-multi-container.hxtzts.0001.ape1.cache.amazonaws.com" },
+        { "name" : "REDIS_PORT", "value": "6379" },
+        { "name" : "PGUSER", "value": "postgres" },
+        { "name" : "PGHOST", "value": "docker-multi-container-postgres.cuq31cfxbizn.ap-east-1.rds.amazonaws.com" },
+        { "name" : "PGDATABASE", "value": "postgres" },
+        { "name" : "PGPASSWORD", "value": "1qaz2wsx" },
+        { "name" : "PGPORT", "value": "5432" }
+      ]
+    },
+    {
+      "name": "worker",
+      "image": "ryanzzff/docker-multi-containers-worker",
+      "hostname": "worker",
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "ryanzzff/docker-multi-containers-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["client", "server"]
+    }
+  ]
+}

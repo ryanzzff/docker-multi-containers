@@ -22,3 +22,16 @@ after_success:
   - docker push ryanzzff/docker-multi-containers-server
   - docker push ryanzzff/docker-multi-containers-worker
 
+deploy:
+  provider: elasticbeanstalk
+  region: ap-east-1
+  app: docker-multi-containers
+  env: DockerMultiContainers-env
+  bucket_name: elasticbeanstalk-ap-east-1-623712114373
+  bucket_path: docker-multi-containers # equal to app name
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  on:
+    branch: master
+
+
